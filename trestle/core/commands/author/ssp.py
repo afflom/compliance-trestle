@@ -47,6 +47,7 @@ from trestle.core.profile_resolver import ProfileResolver
 from trestle.core.remote.cache import FetcherFactory
 from trestle.core.validator import Validator
 from trestle.core.validator_factory import validator_factory
+from trestle.core.inheritance_writer import InheritanceWriter
 
 logger = logging.getLogger(__name__)
 
@@ -75,6 +76,8 @@ class SSPGenerate(AuthorCommonCommand):
             action='store_true',
             default=False
         )
+        self.add_argument('-ls', '--leveraged-ssp', help=const.HELP_LEVERAGED, required=False, type=str)
+
 
     def _run(self, args: argparse.Namespace) -> int:
         try:
@@ -103,7 +106,8 @@ class SSPGenerate(AuthorCommonCommand):
                 md_path,
                 yaml_header,
                 args.overwrite_header_values,
-                args.force_overwrite
+                args.force_overwrite,
+                args.leveraged_ssp
             )
 
         except Exception as e:  # pragma: no cover
@@ -117,7 +121,8 @@ class SSPGenerate(AuthorCommonCommand):
         md_path: pathlib.Path,
         yaml_header: Dict[str, Any],
         overwrite_header_values: bool,
-        force_overwrite: bool
+        force_overwrite: bool,
+        leveraged_ssp: str
     ) -> int:
         """
         Generate the ssp markdown from the profile and compdefs.
@@ -182,6 +187,12 @@ class SSPGenerate(AuthorCommonCommand):
         context.cli_yaml_header[const.TRESTLE_GLOBAL_TAG][const.PROFILE] = profile_header
 
         catalog_api.write_catalog_as_markdown()
+
+        if leveraged_ssp: 
+            inheritance_writer = InheritanceWriter()
+
+            inheritance_writer.write_inherited_controls()
+
 
         return CmdReturnCodes.SUCCESS.value
 

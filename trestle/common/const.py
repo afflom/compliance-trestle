@@ -370,6 +370,10 @@ REMARKS = 'Remarks'
 
 STATUS_REMARKS = 'status-remarks'
 
+PROVIDED_STATEMENT_DESCRIPTION = 'Provided Statement Description'
+
+RESPONSIBILITY_STATEMENT_DESCRIPTION = 'Responsibility Statement Description'
+
 # Following 5 are allowed state tokens for
 # SSP -> ControlImplementation -> ImplementedRequirements -> ByComponents -> common.ImplementationStatus -> State
 # Also                         -> ImplementedRequirements -> Statements -> ByComponents ...
@@ -562,6 +566,17 @@ IMPLEMENTED_REQUIREMENT = 'implemented-requirement'
 ORIGINATION_ORGANIZATION = 'organization'
 
 ORIGINATION_SYSTEM_SPECIFIC = 'system-specific'
+
+HELP_LEVERAGED = 'Name of the SSP to be leveraged.'
+
+YAML_LEVERAGED_COMMENT = """  # Add or modify leveraged SSP Statements here
+  # Leveraged statements can be optionally associated with components in this system.
+  # Associate leveraged statements to Components in this system like this:
+  #   - name: my component
+  #
+"""
+
+TRESTLE_STATEMENT_TAG = TRESTLE_TAG + 'statement'
 
 ORIGINATION_CUSTOMER_CONFIGURED = 'customer-configured'
 

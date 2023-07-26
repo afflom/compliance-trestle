@@ -435,6 +435,8 @@ RULES_PARAMS_TAG = TRESTLE_TAG + 'rules-params'
 
 COMP_DEF_RULES_PARAM_VALS_TAG = TRESTLE_TAG + 'comp-def-rules-param-vals'
 
+TRESTLE_LEVERAGING_COMP_TAG = TRESTLE_TAG + 'leveraging-comp'
+
 PARAM_VALUES_TAG = TRESTLE_TAG + 'param-values'
 
 COMP_DEF_RULES_TAG = TRESTLE_TAG + 'comp-def-rules'
@@ -569,11 +571,11 @@ ORIGINATION_SYSTEM_SPECIFIC = 'system-specific'
 
 HELP_LEVERAGED = 'Name of the SSP to be leveraged.'
 
-YAML_LEVERAGED_COMMENT = """  # Add or modify leveraged SSP Statements here
-  # Leveraged statements can be optionally associated with components in this system.
+YAML_LEVERAGED_COMMENT = """  # Add or modify leveraged SSP Statements here. """
+
+YAML_LEVERAGING_COMP_COMMENT = """  # Leveraged statements can be optionally associated with components in this system.
   # Associate leveraged statements to Components in this system like this:
   #   - name: my component
-  #
 """
 
 TRESTLE_STATEMENT_TAG = TRESTLE_TAG + 'statement'

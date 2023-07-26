@@ -467,6 +467,10 @@ CONTROL_HEADER = '## Control'
 
 REPLACE_ME = 'REPLACE_ME'
 
+PROVIDED_UUID = 'provided-uuid'
+
+RESPONSIBILITY_UUID = 'responsibility-uuid'
+
 YAML_PROPS_COMMENT = """  # Add or modify control properties here
   # Properties may be at the control or part level
   # Add control level properties like this:
@@ -528,6 +532,13 @@ YAML_RULE_PARAM_VALUES_COMPONENT_COMMENT = """  # You may set new values for rul
   #
 """
 
+YAML_LEVERAGED_COMMENT = """  # Add or modify leveraged SSP Statements here.
+"""
+
+YAML_LEVERAGING_COMP_COMMENT = """  # Leveraged statements can be optionally associated with components in this system.
+  # Associate leveraged statements to Components of this system here:
+"""
+
 DISPLAY_NAME = 'display-name'
 
 TRESTLE_GENERIC_NS = 'https://ibm.github.io/compliance-trestle/schemas/oscal'
@@ -570,13 +581,6 @@ ORIGINATION_ORGANIZATION = 'organization'
 ORIGINATION_SYSTEM_SPECIFIC = 'system-specific'
 
 HELP_LEVERAGED = 'Name of the SSP to be leveraged.'
-
-YAML_LEVERAGED_COMMENT = """  # Add or modify leveraged SSP Statements here. """
-
-YAML_LEVERAGING_COMP_COMMENT = """  # Leveraged statements can be optionally associated with components in this system.
-  # Associate leveraged statements to Components in this system like this:
-  #   - name: my component
-"""
 
 TRESTLE_STATEMENT_TAG = TRESTLE_TAG + 'statement'
 

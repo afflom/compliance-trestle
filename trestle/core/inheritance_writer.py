@@ -17,7 +17,7 @@ import pathlib
 from abc import ABC, abstractmethod
 from typing import Any, Dict, Optional
 
-from trestle.common import const
+import trestle.common.const as const
 from trestle.core.markdown.md_writer import MDWriter
 
 logger = logging.getLogger(__name__)
@@ -30,9 +30,11 @@ class LeveragedStatements(ABC):
         """Initialize the class."""
         self._md_file: Optional[MDWriter] = None
         self.header_comment_dict: Dict[str, Any] = {}
-        self.header_comment_dict = {const.TRESTLE_LEVERAGING_COMP_TAG: const.YAML_LEVERAGING_COMP_COMMENT}
+        self.header_comment_dict[const.TRESTLE_LEVERAGING_COMP_TAG] = const.YAML_LEVERAGING_COMP_COMMENT
+        self.header_comment_dict[const.TRESTLE_STATEMENT_TAG] = const.YAML_LEVERAGED_COMMENT
         self.merged_header_dict: Dict[str, Any] = {}
-        self.merged_header_dict = {const.TRESTLE_LEVERAGING_COMP_TAG: {const.NAME: const.REPLACE_ME}}
+        self.merged_header_dict[const.TRESTLE_STATEMENT_TAG] = ''
+        self.merged_header_dict[const.TRESTLE_LEVERAGING_COMP_TAG] = {const.NAME: const.REPLACE_ME}
 
     @abstractmethod
     def write_statement_md(self, leveraged_statement_file: pathlib.Path) -> None:
@@ -54,16 +56,19 @@ class StatementTree(LeveragedStatements):
 
     def write_statement_md(self, leveraged_statement_file: pathlib.Path) -> None:
         """Write a provided and responsibility statements to a markdown file."""
-        self.header_comment_dict[const.TRESTLE_STATEMENT_TAG] = const.YAML_LEVERAGED_COMMENT
-
         self._md_file = MDWriter(leveraged_statement_file, self.header_comment_dict)
+
+        statement_dict: Dict[str, Any] = {}
+        statement_dict[const.PROVIDED_UUID] = self.provided_uuid
+        statement_dict[const.RESPONSIBILITY_UUID] = self.responsibility_uuid
+
+        self.merged_header_dict[const.TRESTLE_STATEMENT_TAG] = statement_dict
+        self._md_file.add_yaml_header(self.merged_header_dict)
 
         self._md_file.new_header(level=1, title=const.PROVIDED_STATEMENT_DESCRIPTION)
         self._md_file.new_line(self.provided_description)
         self._md_file.new_header(level=1, title=const.RESPONSIBILITY_STATEMENT_DESCRIPTION)
         self._md_file.new_line(self.responsibility_description)
-
-        self._md_file.add_yaml_header(self.merged_header_dict)
 
         self._md_file.write_out()
 
@@ -79,14 +84,13 @@ class StatementProvided(LeveragedStatements):
 
     def write_statement_md(self, leveraged_statement_file: pathlib.Path) -> None:
         """Write provided statements to a markdown file."""
-        header_comment_dict = {const.TRESTLE_STATEMENT_TAG: const.YAML_LEVERAGED_COMMENT}
+        self._md_file = MDWriter(leveraged_statement_file, self.header_comment_dict)
 
-        self._md_file = MDWriter(leveraged_statement_file, header_comment_dict)
+        self.merged_header_dict[const.TRESTLE_STATEMENT_TAG] = {const.PROVIDED_UUID: self.provided_uuid}
+        self._md_file.add_yaml_header(self.merged_header_dict)
 
         self._md_file.new_header(level=1, title=const.PROVIDED_STATEMENT_DESCRIPTION)
         self._md_file.new_line(self.provided_description)
-
-        self._md_file.add_yaml_header(self.merged_header_dict)
 
         self._md_file.write_out()
 
@@ -102,13 +106,12 @@ class StatementResponsibility(LeveragedStatements):
 
     def write_statement_md(self, leveraged_statement_file: pathlib.Path) -> None:
         """Write responsibility statements to a markdown file."""
-        header_comment_dict = {const.TRESTLE_STATEMENT_TAG: const.YAML_LEVERAGED_COMMENT}
+        self._md_file = MDWriter(leveraged_statement_file, self.header_comment_dict)
 
-        self._md_file = MDWriter(leveraged_statement_file, header_comment_dict)
+        self.merged_header_dict[const.TRESTLE_STATEMENT_TAG] = {const.RESPONSIBILITY_UUID: self.responsibility_uuid}
+        self._md_file.add_yaml_header(self.merged_header_dict)
 
         self._md_file.new_header(level=1, title=const.RESPONSIBILITY_STATEMENT_DESCRIPTION)
         self._md_file.new_line(self.responsibility_description)
-
-        self._md_file.add_yaml_header(self.merged_header_dict)
 
         self._md_file.write_out()

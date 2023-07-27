@@ -25,13 +25,16 @@ provided_uuid = '18ac4e2a-b5f2-46e4-94fa-cc84ab6fe114'
 provided_statement_desc = 'provided statement description'
 resp_uuid = '4b34c68f-75fa-4b38-baf0-e50158c13ac2'
 resp_statement_desc = 'resp statement description'
+satisfied_statement_desc = 'satisfied statement description'
 
 
 def test_write_inheritance_tree(tmp_path: pathlib.Path) -> None:
     """Test writing statements with both provided and responsibility."""
     statement_tree_path = tmp_path.joinpath('statement_tree.md')
 
-    statement = inheritancewriter.StatementTree(provided_uuid, provided_statement_desc, resp_uuid, resp_statement_desc)
+    statement = inheritancewriter.StatementTree(
+        provided_uuid, provided_statement_desc, resp_uuid, resp_statement_desc, satisfied_statement_desc
+    )
 
     statement.write_statement_md(statement_tree_path)
 
@@ -47,7 +50,9 @@ def test_write_inheritance_tree(tmp_path: pathlib.Path) -> None:
     node = tree.get_node_for_key(const.PROVIDED_STATEMENT_DESCRIPTION, False)
     assert node.content.raw_text == '# Provided Statement Description\n\nprovided statement description\n'
     node = tree.get_node_for_key(const.RESPONSIBILITY_STATEMENT_DESCRIPTION, False)
-    assert node.content.raw_text == '# Responsibility Statement Description\n\nresp statement description'
+    assert node.content.raw_text == '# Responsibility Statement Description\n\nresp statement description\n'
+    node = tree.get_node_for_key(const.SATISFIED_STATEMENT_DESCRIPTION, False)
+    assert node.content.raw_text == '# Satisfied Statement Description\n\nsatisfied statement description'
 
 
 def test_write_inheritance_provided(tmp_path: pathlib.Path) -> None:
@@ -74,7 +79,7 @@ def test_write_inheritance_responsibility(tmp_path: pathlib.Path) -> None:
     """Test writing statements with only responsibility."""
     statement_resp_path = tmp_path.joinpath('statement_req.md')
 
-    statement = inheritancewriter.StatementResponsibility(resp_uuid, resp_statement_desc)
+    statement = inheritancewriter.StatementResponsibility(resp_uuid, resp_statement_desc, satisfied_statement_desc)
 
     statement.write_statement_md(statement_resp_path)
 
@@ -87,4 +92,6 @@ def test_write_inheritance_responsibility(tmp_path: pathlib.Path) -> None:
 
     # Confirm markdown content
     node = tree.get_node_for_key(const.RESPONSIBILITY_STATEMENT_DESCRIPTION, False)
-    assert node.content.raw_text == '# Responsibility Statement Description\n\nresp statement description'
+    assert node.content.raw_text == '# Responsibility Statement Description\n\nresp statement description\n'
+    node = tree.get_node_for_key(const.SATISFIED_STATEMENT_DESCRIPTION, False)
+    assert node.content.raw_text == '# Satisfied Statement Description\n\nsatisfied statement description'

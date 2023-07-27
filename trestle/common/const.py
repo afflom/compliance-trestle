@@ -597,3 +597,5 @@ ORIGINATION_INHERITED = 'inherited'
 INHERITANCE_VIEW_DIR = 'inheritance'
 
 HELP_LEVERAGED = 'Name of the SSP to be leveraged.'
+
+SATISFIED_STATEMENT_DESCRIPTION = 'Satisfied Statement Description'

@@ -19,7 +19,7 @@ import pathlib
 
 import trestle.common.const as const
 import trestle.core.inheritance_writer as inheritancewriter
-from trestle.core.markdown.markdown_processor import MarkdownProcessor
+from trestle.core.markdown.markdown_api import MarkdownAPI
 
 provided_uuid = '18ac4e2a-b5f2-46e4-94fa-cc84ab6fe114'
 provided_statement_desc = 'provided statement description'
@@ -35,7 +35,19 @@ def test_write_inheritance_tree(tmp_path: pathlib.Path) -> None:
 
     statement.write_statement_md(statement_tree_path)
 
-    assert statement_tree_path.exists()
+    # confirm content in yaml header
+    md_api = MarkdownAPI()
+    header, tree = md_api.processor.process_markdown(statement_tree_path)
+    assert tree is not None
+    assert header[const.TRESTLE_LEVERAGING_COMP_TAG]['name'] == 'REPLACE_ME'
+    assert header[const.TRESTLE_STATEMENT_TAG][const.PROVIDED_UUID] == provided_uuid
+    assert header[const.TRESTLE_STATEMENT_TAG][const.RESPONSIBILITY_UUID] == resp_uuid
+
+    # Confirm markdown content
+    node = tree.get_node_for_key(const.PROVIDED_STATEMENT_DESCRIPTION, False)
+    assert node.content.raw_text == '# Provided Statement Description\n\nprovided statement description\n'
+    node = tree.get_node_for_key(const.RESPONSIBILITY_STATEMENT_DESCRIPTION, False)
+    assert node.content.raw_text == '# Responsibility Statement Description\n\nresp statement description'
 
 
 def test_write_inheritance_provided(tmp_path: pathlib.Path) -> None:
@@ -46,11 +58,16 @@ def test_write_inheritance_provided(tmp_path: pathlib.Path) -> None:
 
     statement.write_statement_md(statement_provided_path)
 
-    assert statement_provided_path.exists()
+    # confirm content in yaml header
+    md_api = MarkdownAPI()
+    header, tree = md_api.processor.process_markdown(statement_provided_path)
+    assert tree is not None
+    assert header[const.TRESTLE_LEVERAGING_COMP_TAG]['name'] == 'REPLACE_ME'
+    assert header[const.TRESTLE_STATEMENT_TAG][const.PROVIDED_UUID] == provided_uuid
 
-    md_proc = MarkdownProcessor()
-
-    assert md_proc.fetch_value_from_header(statement_provided_path, const.TRESTLE_LEVERAGING_COMP_TAG)
+    # Confirm markdown content
+    node = tree.get_node_for_key(const.PROVIDED_STATEMENT_DESCRIPTION, False)
+    assert node.content.raw_text == '# Provided Statement Description\n\nprovided statement description'
 
 
 def test_write_inheritance_responsibility(tmp_path: pathlib.Path) -> None:
@@ -61,8 +78,13 @@ def test_write_inheritance_responsibility(tmp_path: pathlib.Path) -> None:
 
     statement.write_statement_md(statement_resp_path)
 
-    assert statement_resp_path.exists()
+    # confirm content in yaml header
+    md_api = MarkdownAPI()
+    header, tree = md_api.processor.process_markdown(statement_resp_path)
+    assert tree is not None
+    assert header[const.TRESTLE_LEVERAGING_COMP_TAG]['name'] == 'REPLACE_ME'
+    assert header[const.TRESTLE_STATEMENT_TAG][const.RESPONSIBILITY_UUID] == resp_uuid
 
-    md_proc = MarkdownProcessor()
-
-    assert md_proc.fetch_value_from_header(statement_resp_path, const.TRESTLE_LEVERAGING_COMP_TAG)
+    # Confirm markdown content
+    node = tree.get_node_for_key(const.RESPONSIBILITY_STATEMENT_DESCRIPTION, False)
+    assert node.content.raw_text == '# Responsibility Statement Description\n\nresp statement description'

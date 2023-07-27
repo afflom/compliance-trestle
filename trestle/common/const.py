@@ -580,8 +580,6 @@ ORIGINATION_ORGANIZATION = 'organization'
 
 ORIGINATION_SYSTEM_SPECIFIC = 'system-specific'
 
-HELP_LEVERAGED = 'Name of the SSP to be leveraged.'
-
 TRESTLE_STATEMENT_TAG = TRESTLE_TAG + 'statement'
 
 ORIGINATION_CUSTOMER_CONFIGURED = 'customer-configured'

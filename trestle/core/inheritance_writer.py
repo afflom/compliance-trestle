@@ -29,7 +29,7 @@ class LeveragedStatements(ABC):
     def __init__(self):
         """Initialize the class."""
         self._md_file: Optional[MDWriter] = None
-        self.header_comment_dict: Dict[str, Any] = {}
+        self.header_comment_dict: Dict[str, str] = {}
         self.header_comment_dict[const.TRESTLE_LEVERAGING_COMP_TAG] = const.YAML_LEVERAGING_COMP_COMMENT
         self.header_comment_dict[const.TRESTLE_STATEMENT_TAG] = const.YAML_LEVERAGED_COMMENT
         self.merged_header_dict: Dict[str, Any] = {}
@@ -58,7 +58,7 @@ class StatementTree(LeveragedStatements):
         """Write a provided and responsibility statements to a markdown file."""
         self._md_file = MDWriter(leveraged_statement_file, self.header_comment_dict)
 
-        statement_dict: Dict[str, Any] = {}
+        statement_dict: Dict[str, str] = {}
         statement_dict[const.PROVIDED_UUID] = self.provided_uuid
         statement_dict[const.RESPONSIBILITY_UUID] = self.responsibility_uuid
 

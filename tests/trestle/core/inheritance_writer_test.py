@@ -29,7 +29,7 @@ resp_statement_desc = 'resp statement description'
 
 def test_write_inheritance_tree(tmp_path: pathlib.Path) -> None:
     """Test writing statements with both provided and responsibility."""
-    statement_tree_path = tmp_path.joinpath('statementTree.md')
+    statement_tree_path = tmp_path.joinpath('statement_tree.md')
 
     statement = inheritancewriter.StatementTree(provided_uuid, provided_statement_desc, resp_uuid, resp_statement_desc)
 
@@ -52,7 +52,7 @@ def test_write_inheritance_tree(tmp_path: pathlib.Path) -> None:
 
 def test_write_inheritance_provided(tmp_path: pathlib.Path) -> None:
     """Test writing statements with only provided."""
-    statement_provided_path = tmp_path.joinpath('statementProvided.md')
+    statement_provided_path = tmp_path.joinpath('statement_provided.md')
 
     statement = inheritancewriter.StatementProvided(provided_uuid, provided_statement_desc)
 
@@ -72,7 +72,7 @@ def test_write_inheritance_provided(tmp_path: pathlib.Path) -> None:
 
 def test_write_inheritance_responsibility(tmp_path: pathlib.Path) -> None:
     """Test writing statements with only responsibility."""
-    statement_resp_path = tmp_path.joinpath('statementReq.md')
+    statement_resp_path = tmp_path.joinpath('statement_req.md')
 
     statement = inheritancewriter.StatementResponsibility(resp_uuid, resp_statement_desc)
 
